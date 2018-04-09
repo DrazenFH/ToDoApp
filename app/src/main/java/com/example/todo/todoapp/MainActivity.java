@@ -34,8 +34,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        FirebaseDB db = new FirebaseDB();
-        db.readData();
+        getData();
 
         mTheme = R.style.CustomStyle_LightTheme;
         this.setTheme(mTheme);
@@ -50,25 +49,28 @@ public class MainActivity extends AppCompatActivity{
         //Liste erstellen
         mListView = (ListView) findViewById(R.id.recipe_list_view);
 // 1
-        final ArrayList<String> recipeList = new ArrayList<String>();
-        recipeList.add("Tomaten kaufen!");
-        recipeList.add("Grüne Paprika kaufen!");
-        recipeList.add("Ayran!");
-        recipeList.add("Schweinegrammeln");
+
+
 
 // 2
-        String[] listItems = new String[recipeList.size()];
-// 3
-        for(int i = 0; i < recipeList.size(); i++){
-            String recipe = recipeList.get(i);
-            listItems[i] = recipe;
-        }
+//        String[] listItems = new String[todoList.size()];
+//// 3
+//        for(int i = 0; i < todoList.size(); i++){
+//            String todoTitle = todoList.get(i).getmToDoText();
+//            listItems[i] = todoTitle;
+//        }
 // 4
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems);
+     /*   ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems);
         mListView.setAdapter(adapter);
-
+*/
     }
 
+    public void getData(){
+        ArrayList<ToDoItem> listItem = new ArrayList<>();
+        FirebaseDB db = new FirebaseDB();
+        db.readData();
+        listItem = db.getItemList();
+    }
 
 
     @Override

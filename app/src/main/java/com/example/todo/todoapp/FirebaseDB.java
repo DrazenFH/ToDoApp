@@ -8,13 +8,19 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.ThrowOnExtraProperties;
+
+import org.w3c.dom.Document;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +30,12 @@ import java.util.Map;
 public class FirebaseDB {
 
    protected FirebaseFirestore db;
+
+    public ArrayList<ToDoItem> getItemList() {
+        return itemList;
+    }
+
+    public ArrayList<ToDoItem> itemList = new ArrayList<>();
 
     public FirebaseDB(){
         db = FirebaseFirestore.getInstance();
@@ -52,21 +64,27 @@ public class FirebaseDB {
     }
 
     public void readData(){
+
+        ToDoItem toDoItem = new ToDoItem();
+
         db.collection("TodoItems")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("success", document.getId() + " => " + document.getData());
-                                System.out.println(document.getData());
+                                System.out.println("data: "+ document.getData());
+                                ToDoItem asd = document.toObject(ToDoItem.class);
+                                itemList.add(asd);
                             }
                         } else {
-                            Log.w("fail", "Error getting documents.", task.getException());
+                            Log.d("error", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
     }
+
 }
