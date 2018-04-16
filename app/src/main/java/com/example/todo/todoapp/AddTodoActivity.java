@@ -172,8 +172,12 @@ public class AddTodoActivity extends AppCompatActivity implements
 
                         //Todo Add Person to Personlist from TODOItem
                         System.out.println("Added Person: " + contactNumberName);
-                        contactsTempList.add(contactNumberName);
-                        arrayAdapter.notifyDataSetChanged();
+                        if(!contactsTempList.contains(contactNumberName)) {
+
+
+                            contactsTempList.add(contactNumberName);
+                            arrayAdapter.notifyDataSetChanged();
+                        }
                     }
                 }
                 break;
