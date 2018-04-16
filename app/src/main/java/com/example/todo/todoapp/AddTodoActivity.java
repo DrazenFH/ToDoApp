@@ -1,7 +1,12 @@
 package com.example.todo.todoapp;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +26,7 @@ import android.widget.TimePicker;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -32,11 +38,16 @@ public class AddTodoActivity extends AppCompatActivity implements
         View.OnClickListener {
 
     private Button btnDatePicker, btnTimePicker;
+    private ListView contactList;
     private EditText title;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private ToDoItem toDoItem;
     private FloatingActionButton mToDoSendFloatingActionButton;
     private SwitchCompat reminderSwitch;
+    private static final int PICK_CONTACT = 1000;
+    private ArrayAdapter<String> arrayAdapter;
+    private ArrayList<String> contactsTempList;
+    //TODO: add person list for todoitem
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +58,14 @@ public class AddTodoActivity extends AppCompatActivity implements
         btnTimePicker=(Button)findViewById(R.id.newToDoChooseTimeButton);
         title=(EditText) findViewById(R.id.editText);
         reminderSwitch = (SwitchCompat)findViewById(R.id.toDoHasDateSwitchCompat);
-
+        contactList=(ListView) findViewById(R.id.newToDoDateTimeReminderTextView);
 
         btnDatePicker.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
+
+        contactsTempList=new ArrayList<>();
+        arrayAdapter=new ArrayAdapter<>(this, R.layout.list_item, R.id.txtitem, contactsTempList);
+        contactList.setAdapter(arrayAdapter);
 
 
 
@@ -104,7 +119,7 @@ public class AddTodoActivity extends AppCompatActivity implements
     }
 
     public void addToDo(View view){
-        ToDoItem newItem = new ToDoItem();
+      /*  ToDoItem newItem = new ToDoItem();
 
         String todoTitle = title.getText().toString();
         boolean reminder = reminderSwitch.isChecked();
@@ -131,12 +146,39 @@ public class AddTodoActivity extends AppCompatActivity implements
 
        // newItem.addItemToList(newItem);
 
-        FirebaseDB db = new FirebaseDB();
+       FirebaseDB db = new FirebaseDB();
         db.addData(newItem);
 
-
+*/
 
     }
 
+        public void pickAContactNumber(View view) {
+            Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+            startActivityForResult(intent, PICK_CONTACT);
+        }
 
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+
+        switch (reqCode) {
+            case (PICK_CONTACT):
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri contactData = data.getData();
+                    Cursor phone = getContentResolver().query(contactData, null, null, null, null);
+                    if (phone.moveToFirst()) {
+                        String contactNumberName = phone.getString(phone.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+
+                        //Todo Add Person to Personlist from TODOItem
+                        System.out.println("Added Person: " + contactNumberName);
+                        contactsTempList.add(contactNumberName);
+                        arrayAdapter.notifyDataSetChanged();
+                    }
+                }
+                break;
+        }
+    }
 }
+
+
