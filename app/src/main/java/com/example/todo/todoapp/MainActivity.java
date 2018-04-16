@@ -4,10 +4,19 @@ package com.example.todo.todoapp;
 import android.app.AlarmManager;
 import android.app.ListActivity;
 import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -36,10 +45,11 @@ public class MainActivity extends AppCompatActivity{
     private int mTheme = -1;
     private ListView mListView;
     private ArrayList<ToDoItem> mToDoItemsArrayList;
+    private NetworkChangeReceiver networkChangeReceiver = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         getData();
 
         mTheme = R.style.CustomStyle_LightTheme;
@@ -90,7 +100,27 @@ public class MainActivity extends AppCompatActivity{
         System.out.println("This is the item-->"+item.getmToDoDate());
         setAlarms();
 
+
+
+        //TODO: Checks if network connection is available
+        // Create an IntentFilter instance.
+        IntentFilter intentFilter = new IntentFilter();
+
+        // Add network connectivity change action.
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+
+        // Set broadcast receiver priority.
+        intentFilter.setPriority(100);
+
+        // Create a network change broadcast receiver.
+        networkChangeReceiver = new NetworkChangeReceiver();
+
+        // Register the broadcast receiver with the intent filter object.
+        registerReceiver(networkChangeReceiver, intentFilter);
+
         }
+
+
 
     private void setAlarms(){
         if(mToDoItemsArrayList!=null){
@@ -157,6 +187,16 @@ public class MainActivity extends AppCompatActivity{
     public void addNewItem(View view){
         Intent intent = new Intent(this, AddTodoActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // If the broadcast receiver is not null then unregister it.
+        // This action is better placed in activity onDestroy() method.
+        if(this.networkChangeReceiver!=null) {
+            unregisterReceiver(this.networkChangeReceiver);
+        }
     }
 
 }
