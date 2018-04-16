@@ -16,6 +16,15 @@ import java.util.UUID;
 public class ToDoItem implements Serializable{
     private String mToDoText;
     private boolean mHasReminder;
+    private UUID mTodoIdentifier;
+    private Date mToDoDate;
+
+    public ToDoItem(String todoBody, boolean hasReminder, Date toDoDate){
+        mToDoText = todoBody;
+        mHasReminder = hasReminder;
+        mToDoDate = toDoDate;
+        mTodoIdentifier = UUID.randomUUID();
+    }
 
     public String getmToDoText() {
         return mToDoText;
@@ -41,13 +50,7 @@ public class ToDoItem implements Serializable{
         this.mToDoDate = mToDoDate;
     }
 
-
-    private Date mToDoDate;
-
-
-public ToDoItem(){
-
-}
-
-
+    public UUID getmTodoIdentifier() {
+        return mTodoIdentifier;
+    }
 }
