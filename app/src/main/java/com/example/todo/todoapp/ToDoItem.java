@@ -18,7 +18,12 @@ public class ToDoItem implements Serializable{
     private boolean mHasReminder;
     private UUID mTodoIdentifier;
     private Date mToDoDate;
+    private ArrayList<String> assignedPersons;
 
+public ToDoItem(){
+    mTodoIdentifier = UUID.randomUUID();
+
+}
     public ToDoItem(String todoBody, boolean hasReminder, Date toDoDate){
         mToDoText = todoBody;
         mHasReminder = hasReminder;
@@ -52,5 +57,27 @@ public class ToDoItem implements Serializable{
 
     public UUID getmTodoIdentifier() {
         return mTodoIdentifier;
+    }
+
+    public void setmTodoIdentifier(UUID mTodoIdentifier) {
+        this.mTodoIdentifier = mTodoIdentifier;
+    }
+
+    public ArrayList<String> getAssignedPersons() {
+        return assignedPersons;
+    }
+
+    public void setAssignedPersons(ArrayList<String> assignedPersons) {
+        this.assignedPersons = assignedPersons;
+    }
+
+    public void addAssignedPerson(String person) {
+        this.assignedPersons.add(person);
+    }
+
+
+    @Override
+    public String toString() {
+        return this.mToDoText;
     }
 }

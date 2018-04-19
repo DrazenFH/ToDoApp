@@ -29,6 +29,8 @@ import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -41,16 +43,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements OnFireBaseDataChanged{
     private int mTheme = -1;
     private ListView mListView;
     private ArrayList<ToDoItem> mToDoItemsArrayList;
     private NetworkChangeReceiver networkChangeReceiver = null;
-
+    private DatabaseReference db;
+    private FirebaseDB helper;
+    private ArrayAdapter<ToDoItem> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getData();
+        //getData();
 
         mTheme = R.style.CustomStyle_LightTheme;
         this.setTheme(mTheme);
@@ -65,6 +69,13 @@ public class MainActivity extends AppCompatActivity{
         //Liste erstellen
         mListView = (ListView) findViewById(R.id.recipe_list_view);
 // 1
+        db= FirebaseDatabase.getInstance().getReference();
+        helper=new FirebaseDB(db, this);
+
+        //ADAPTER
+        adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,helper.retrieve());
+
+        mListView.setAdapter(adapter);
 
 
 
@@ -86,8 +97,8 @@ public class MainActivity extends AppCompatActivity{
         //Only for testing purpose
         mToDoItemsArrayList=new ArrayList<>();
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY,18);
-        cal.set(Calendar.MINUTE, 51);
+        cal.set(Calendar.HOUR_OF_DAY,14);
+        cal.set(Calendar.MINUTE, 04);
         cal.set(Calendar.SECOND,0);
         cal.set(Calendar.MILLISECOND,0);
 
@@ -151,13 +162,13 @@ public class MainActivity extends AppCompatActivity{
         return (AlarmManager)getSystemService(ALARM_SERVICE);
     }
 
-    public void getData(){
+  /*  public void getData(){
         ArrayList<ToDoItem> listItem = new ArrayList<>();
         FirebaseDB db = new FirebaseDB();
         db.readData();
         listItem = db.getItemList();
     }
-
+*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -199,4 +210,8 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    @Override
+    public void dataChanged() {
+        adapter.notifyDataSetChanged();
+    }
 }

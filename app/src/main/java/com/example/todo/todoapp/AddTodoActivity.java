@@ -23,6 +23,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TimePicker;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -119,7 +122,11 @@ public class AddTodoActivity extends AppCompatActivity implements
     }
 
     public void addToDo(View view){
-      /*  ToDoItem newItem = new ToDoItem();
+
+        DatabaseReference db= FirebaseDatabase.getInstance().getReference();
+        FirebaseDB helper=new FirebaseDB(db);
+
+       ToDoItem newItem = new ToDoItem();
 
         String todoTitle = title.getText().toString();
         boolean reminder = reminderSwitch.isChecked();
@@ -143,13 +150,13 @@ public class AddTodoActivity extends AppCompatActivity implements
         newItem.setmToDoText(todoTitle);
         newItem.setmToDoDate(cal.getTime());
         newItem.setmHasReminder(reminder);
-
+        newItem.setAssignedPersons(contactsTempList);
        // newItem.addItemToList(newItem);
 
-       FirebaseDB db = new FirebaseDB();
-        db.addData(newItem);
 
-*/
+       helper.save(newItem);
+
+      finish();
 
     }
 
