@@ -4,12 +4,8 @@ package com.example.todo.todoapp;
  * Created by dl_asus on 26.03.2018.
  */
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 

@@ -2,46 +2,28 @@ package com.example.todo.todoapp;
 
 
 import android.app.AlarmManager;
-import android.app.ListActivity;
 import android.app.PendingIntent;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkInfo;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements OnFireBaseDataChanged{
     private int mTheme = -1;
@@ -51,24 +33,24 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
     private DatabaseReference db;
     private FirebaseDB helper;
     private ArrayAdapter<ToDoItem> adapter;
+    private static MainActivity instance;
+    private boolean connection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //getData();
 
+        instance = this;
+        connection=true;
         mTheme = R.style.CustomStyle_LightTheme;
         this.setTheme(mTheme);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         final android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         //Liste erstellen
         mListView = (ListView) findViewById(R.id.recipe_list_view);
-// 1
+
         db= FirebaseDatabase.getInstance().getReference();
         helper=new FirebaseDB(db, this);
 
@@ -77,19 +59,6 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
 
         mListView.setAdapter(adapter);
 
-
-
-// 2
-//        String[] listItems = new String[todoList.size()];
-//// 3
-//        for(int i = 0; i < todoList.size(); i++){
-//            String todoTitle = todoList.get(i).getmToDoText();
-//            listItems[i] = todoTitle;
-//        }
-// 4
-     /*   ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems);
-        mListView.setAdapter(adapter);
-*/
     }
     @Override
     protected void onStart() {
@@ -196,8 +165,13 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
     }
 
     public void addNewItem(View view){
-        Intent intent = new Intent(this, AddTodoActivity.class);
-        startActivity(intent);
+        if(connection) {
+            Intent intent = new Intent(this, AddTodoActivity.class);
+            startActivity(intent);
+        }
+        else{
+            new Alert(this);
+        }
     }
 
     @Override
@@ -213,5 +187,14 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
     @Override
     public void dataChanged() {
         adapter.notifyDataSetChanged();
+    }
+    public static MainActivity getInstace(){
+        return instance;
+    }
+    public void disableAddButton(){
+        connection=false;
+    }
+    public void enableAddButton(){
+       connection=true;
     }
 }

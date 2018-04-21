@@ -1,16 +1,11 @@
 package com.example.todo.todoapp;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.widget.TextView;
 import android.widget.DatePicker;
-import android.app.Dialog;
 
-import java.io.Console;
 import java.util.Calendar;
-
-import android.app.DialogFragment;
 
 /**
  * Created by dl_asus on 26.03.2018.

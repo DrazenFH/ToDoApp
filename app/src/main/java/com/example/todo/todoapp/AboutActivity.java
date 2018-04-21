@@ -1,20 +1,12 @@
 package com.example.todo.todoapp;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
-
-import com.example.todo.todoapp.R;
 
 
 /**

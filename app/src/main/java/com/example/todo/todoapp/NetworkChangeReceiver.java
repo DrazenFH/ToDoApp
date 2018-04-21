@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
-import android.widget.Toast;
 
 /**
  * Created by w7pro on 16.04.2018.
@@ -43,18 +42,12 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
         if(networkIsAvailable)
         {
             networkMessage = "Network is available";
+            MainActivity.getInstace().enableAddButton();
         }else
         {
-            AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-            alertDialog.setTitle("No Network connections are available!");
-            alertDialog.setMessage("Can't connect to Database!");
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alertDialog.show();
+          new Alert(context);
+            MainActivity.getInstace().disableAddButton();
+
         }
     }
         }
