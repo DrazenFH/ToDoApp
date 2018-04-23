@@ -131,10 +131,8 @@ public class AddTodoActivity extends AppCompatActivity implements
             newItem.setmToDoText(todoTitle);
             newItem.setmHasReminder(reminder);
             newItem.setAssignedPersons(contactsTempList);
-
-
             // get Date and Time from Pickers
-            if(reminder) {
+
                 Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.HOUR_OF_DAY, mHour);
                 cal.set(Calendar.MINUTE, mMinute);
@@ -145,7 +143,7 @@ public class AddTodoActivity extends AppCompatActivity implements
                 cal.set(Calendar.YEAR, mYear);
                 Date date = cal.getTime();
                 newItem.setmToDoDate(date);
-            }
+
 
             if (helper.save(newItem) ) {
                 if(newItem.ismHasReminder()) {
