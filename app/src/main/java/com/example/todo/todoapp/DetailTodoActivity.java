@@ -2,7 +2,10 @@ package com.example.todo.todoapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -28,20 +31,26 @@ public class DetailTodoActivity extends AppCompatActivity {
     private TextView reminder;
     private DatabaseReference db;
     private FirebaseDB helper;
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        db= FirebaseDatabase.getInstance().getReference();
-        helper=new FirebaseDB(db);
+        db = FirebaseDatabase.getInstance().getReference();
+        helper = new FirebaseDB(db);
 
         setContentView(R.layout.activity_todo_details);
-        Intent i=getIntent();
-        ToDoItem item=(ToDoItem)i.getSerializableExtra("TodoItemClicked");
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        Intent i = getIntent();
+        ToDoItem item = (ToDoItem) i.getSerializableExtra("TodoItemClicked");
 
-        title=findViewById(R.id.editTextTitle);
+        title = findViewById(R.id.editTextTitle);
         title.setText(item.getmToDoText());
-        if(item.getmToDoDate()!=null) {
+        if (item.getmToDoDate() != null) {
             date = findViewById(R.id.editTextDate);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
             date.setText(simpleDateFormat.format(item.getmToDoDate()));
@@ -50,10 +59,10 @@ public class DetailTodoActivity extends AppCompatActivity {
             simpleDateFormat = new SimpleDateFormat("hh:mm");
             time.setText(simpleDateFormat.format(item.getmToDoDate()));
         }
-        reminder=findViewById(R.id.editTextReminder);
+        reminder = findViewById(R.id.editTextReminder);
         reminder.setText(String.valueOf(item.ismHasReminder()));
 
-        if(item.getAssignedPersons()!=null&&item.getAssignedPersons().size()>0) {
+        if (item.getAssignedPersons() != null && item.getAssignedPersons().size() > 0) {
             String persons = new String();
             for (String person : item.getAssignedPersons()) {
                 persons += person + ",\n";
@@ -65,11 +74,24 @@ public class DetailTodoActivity extends AppCompatActivity {
     }
 
     public void removeItem(View view) {
-        helper.removeItem((ToDoItem)getIntent().getSerializableExtra("TodoItemClicked"));
+        helper.removeItem((ToDoItem) getIntent().getSerializableExtra("TodoItemClicked"));
         finish();
     }
 
     public void setAsDone(View view) {
         finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (NavUtils.getParentActivityName(this) != null) {
+                    NavUtils.navigateUpFromSameTask(this);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
