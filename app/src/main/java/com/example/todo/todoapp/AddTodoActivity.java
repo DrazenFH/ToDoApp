@@ -92,6 +92,7 @@ public class AddTodoActivity extends AppCompatActivity implements
 
                         }
                     }, mYear, mMonth, mDay);
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()-1000);
             datePickerDialog.show();
         }
         if (v == btnTimePicker) {
