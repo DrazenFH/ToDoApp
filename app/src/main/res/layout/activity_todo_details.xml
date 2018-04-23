@@ -28,7 +28,7 @@
                     android:id="@+id/textViewTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Title" />
+                    android:text="@string/title" />
 
                 <EditText
                     android:id="@+id/editTextTitle"
@@ -47,7 +47,7 @@
                     android:id="@+id/textViewDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date" />
+                    android:text="@string/choose_date" />
 
                 <EditText
                     android:id="@+id/editTextDate"
@@ -66,7 +66,7 @@
                     android:id="@+id/textViewTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Time" />
+                    android:text="@string/choose_time" />
 
                 <EditText
                     android:id="@+id/editTextTime"
@@ -86,7 +86,7 @@
                     android:id="@+id/textViewContacts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Contacts" />
+                    android:text="@string/textViewContacts" />
 
                 <EditText
                     android:id="@+id/editTextContacts"
@@ -105,7 +105,7 @@
                     android:id="@+id/textViewReminder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Reminder" />
+                    android:text="@string/textViewReminder" />
 
                 <EditText
                     android:id="@+id/editTextReminder"
@@ -128,7 +128,7 @@
                     android:layout_gravity="left"
                     android:background="@color/red_primary"
                     android:onClick="removeItem"
-                    android:text="Remove ToDo" />
+                    android:text="@string/buttonRemove" />
 
                 <Button
                     android:id="@+id/buttonDone"
@@ -137,7 +137,7 @@
                     android:layout_gravity="right"
                     android:background="@color/green"
                     android:onClick="setAsDone"
-                    android:text="Set as done" />
+                    android:text="@string/buttonDone" />
             </TableRow>
         </TableLayout>
 

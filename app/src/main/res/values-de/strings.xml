@@ -21,4 +21,5 @@
     <string name="todo_error">Bitte ein Todo eingeben</string>
     <string name="buttonDone">Todo erledigt</string>
     <string name="buttonRemove">Todo löschen</string>
+
 </resources>
