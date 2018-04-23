@@ -6,6 +6,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -65,15 +66,20 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ToDoItem item = (ToDoItem) adapter.getItem(i);
                 System.out.println(item.getmToDoText());
-                Intent intent = new Intent(this,destinationActivity.class);
+                startDetailActivity(item);
                 //based on item add info to intent
-                startActivity(intent);
             }
 
         });
         setAlarms();
     }
 
+    private void startDetailActivity(ToDoItem item) {
+        Intent i = new Intent(this, DetailTodoActivity.class);
+
+        i.putExtra("TodoItemClicked",item);
+        startActivity(i);
+    }
 
 
     @Override

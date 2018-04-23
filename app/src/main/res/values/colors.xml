@@ -10,6 +10,9 @@
 
     <color name="divider_color">#B6B6B6</color>
 
+
+    <color name="green">#00ff00</color>
+
     <color name="light_primary_color">#FFCDD2</color>
 
     <color name="primary">#3F51B5</color>

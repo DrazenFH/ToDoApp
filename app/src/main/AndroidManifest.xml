@@ -47,6 +47,10 @@
             android:parentActivityName=".MainActivity"
             />
 
+        <activity android:name=".DetailTodoActivity"
+            android:label="DetailsTodo"
+            android:parentActivityName=".MainActivity"
+            />
         <service android:name=".AlarmNotificationReceiver"
             />
         <receiver
