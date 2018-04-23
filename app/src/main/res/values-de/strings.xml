@@ -13,7 +13,10 @@
     <string name="done_label">Fertig</string>
     <string name="date_reminder_default">Heute</string>
     <string name="date_error_check_again">Das Datum liegt in der Vergangenheit</string>
-
-
-    <string name="todo_error">Please enter a Todo</string>
+    <string name="textViewTitle">Titel</string>
+    <string name="textViewDate">Datum</string>
+    <string name="textViewTime">Uhrzeit</string>
+    <string name="textViewContacts">Kontakte</string>
+    <string name="textViewReminder">Erinnerung</string>
+    <string name="todo_error">Bitte ein Todo eingeben</string>
 </resources>

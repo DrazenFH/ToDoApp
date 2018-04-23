@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
 
         //Liste erstellen
         mListView = (ListView) findViewById(R.id.recipe_list_view);
-
         db= FirebaseDatabase.getInstance().getReference();
         helper=new FirebaseDB(db, this);
 
@@ -67,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
                 ToDoItem item = (ToDoItem) adapter.getItem(i);
                 System.out.println(item.getmToDoText());
                 startDetailActivity(item);
-                //based on item add info to intent
+               //based on item add info to intent
             }
 
         });

@@ -1,10 +1,15 @@
 package com.example.todo.todoapp;
 
+import android.util.Log;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,7 +58,10 @@ public class FirebaseDB {
         return saved;
     }
 
+        public void removeItem(ToDoItem item){
+            db.child("TodoItem").child(item.getmId()).removeValue();
 
+        }
         //READ
         public ArrayList<ToDoItem> retrieve()
         {
@@ -71,7 +79,7 @@ public class FirebaseDB {
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                    fetchData(dataSnapshot);
                 }
 
                 @Override
@@ -103,7 +111,7 @@ public class FirebaseDB {
                 HashMap <String, Object> hashMap=(HashMap<String, Object>) ds.child("mTodoIdentifier").getValue();
                 item.setmTodoIdentifier(new UUID((long)hashMap.get("mostSignificantBits"), (long)hashMap.get("leastSignificantBits")));
                 item.setAssignedPersons((ArrayList<String>)ds.child("assignedPersons").getValue());
-
+                item.setmId(ds.getKey());
                 toDoItemArrayList.add(item);
                 dataChangedListener.dataChanged();
              }

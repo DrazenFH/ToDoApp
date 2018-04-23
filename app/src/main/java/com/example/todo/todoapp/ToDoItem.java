@@ -14,6 +14,7 @@ public class ToDoItem implements Serializable{
     private boolean mHasReminder;
     private UUID mTodoIdentifier;
     private Date mToDoDate;
+    private String mId;
     private ArrayList<String> assignedPersons;
 
 public ToDoItem(){
@@ -26,7 +27,13 @@ public ToDoItem(){
         mToDoDate = toDoDate;
         mTodoIdentifier = UUID.randomUUID();
     }
+    public String getmId() {
+        return mId;
+    }
 
+    public void setmId(String mId) {
+        this.mId = mId;
+    }
     public String getmToDoText() {
         return mToDoText;
     }

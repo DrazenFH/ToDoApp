@@ -124,20 +124,24 @@
                 </TableRow>
 
                 <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_width="wrap_content"
+                    android:layout_height="97dp"
+                    android:orientation="vertical">
 
                     <Button
                         android:id="@+id/buttonRemove"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="left"
                         android:background="@color/red_primary"
                         android:onClick="removeItem"
                         android:text="Remove ToDo" />
 
                     <Button
                         android:id="@+id/buttonDone"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
                         android:background="@color/green"
                         android:onClick="setAsDone"
                         android:text="Set as done" />
