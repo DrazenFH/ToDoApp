@@ -58,31 +58,12 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
         adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,helper.retrieve());
 
         mListView.setAdapter(adapter);
-
+        setAlarms();
     }
     @Override
     protected void onStart() {
         super.onStart();
-        //Only for testing purpose
-        mToDoItemsArrayList=new ArrayList<>();
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY,14);
-        cal.set(Calendar.MINUTE, 04);
-        cal.set(Calendar.SECOND,0);
-        cal.set(Calendar.MILLISECOND,0);
 
-        Date d = cal.getTime();
-        System.out.println("This is the date-->"+d);
-        ToDoItem item=new ToDoItem("Test1", true, d);
-
-        item.setmToDoDate(d);
-        mToDoItemsArrayList.add(item);
-        System.out.println("This is the item-->"+item.getmToDoDate());
-        setAlarms();
-
-
-
-        //TODO: Checks if network connection is available
         // Create an IntentFilter instance.
         IntentFilter intentFilter = new IntentFilter();
 
@@ -97,27 +78,30 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
 
         // Register the broadcast receiver with the intent filter object.
         registerReceiver(networkChangeReceiver, intentFilter);
-
-        }
+    }
 
 
 
     private void setAlarms(){
-        if(mToDoItemsArrayList!=null){
-            for(ToDoItem item : mToDoItemsArrayList){
+            System.out.println("Setting alarms");
+            System.out.println("Size "+mListView.getAdapter().getCount());
+            for(int i=0; i<mListView.getAdapter().getCount();i++){
+                ToDoItem item=(ToDoItem) mListView.getAdapter().getItem(i);
+                System.out.println("Todoitem alarm "+item.getmToDoText());
+                System.out.println("Todoitem alarm "+item.getmToDoDate());
                 if(item.ismHasReminder() && item.getmToDoDate()!=null){
                     if(item.getmToDoDate().before(new Date())){
                         item.setmToDoDate(null);
                         continue;
                     }
-                    Intent i = new Intent(this, AlarmNotificationReceiver.class);
-                    i.putExtra(AlarmNotificationReceiver.TODOUUID, item.getmTodoIdentifier());
-                    i.putExtra(AlarmNotificationReceiver.TODOTEXT, item.getmToDoText());
-                    createAlarm(i, item.getmTodoIdentifier().hashCode(), item.getmToDoDate().getTime());
+                    Intent intent = new Intent(this, AlarmNotificationReceiver.class);
+                    intent.putExtra(AlarmNotificationReceiver.TODOUUID, item.getmTodoIdentifier());
+                    intent.putExtra(AlarmNotificationReceiver.TODOTEXT, item.getmToDoText());
+                    createAlarm(intent, item.getmTodoIdentifier().hashCode(), item.getmToDoDate().getTime());
                 }
-            }
         }
     }
+
     private void createAlarm(Intent i, int requestCode, long timeInMillis){
         AlarmManager am = getAlarmManager();
         PendingIntent pi = PendingIntent.getService(this,requestCode, i, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -127,17 +111,11 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
     }
 
 
+
     private AlarmManager getAlarmManager(){
         return (AlarmManager)getSystemService(ALARM_SERVICE);
     }
 
-  /*  public void getData(){
-        ArrayList<ToDoItem> listItem = new ArrayList<>();
-        FirebaseDB db = new FirebaseDB();
-        db.readData();
-        listItem = db.getItemList();
-    }
-*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -170,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
             startActivity(intent);
         }
         else{
-            new Alert(this);
+            new Alert(this,"No Network connections are available!","Can't connect to Database!");
         }
     }
 
@@ -187,6 +165,14 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
     @Override
     public void dataChanged() {
         adapter.notifyDataSetChanged();
+
+    }
+    public void setSingleAlarm(ToDoItem item){
+        Intent intent = new Intent(this, AlarmNotificationReceiver.class);
+        intent.putExtra(AlarmNotificationReceiver.TODOUUID, item.getmTodoIdentifier());
+        intent.putExtra(AlarmNotificationReceiver.TODOTEXT, item.getmToDoText());
+        createAlarm(intent, item.getmTodoIdentifier().hashCode(), item.getmToDoDate().getTime());
+        System.out.println("Setting single Alarm "+item.getmToDoDate());
     }
     public static MainActivity getInstace(){
         return instance;

@@ -9,10 +9,10 @@ import android.support.v7.app.AlertDialog;
  */
 
 public class Alert {
-    public Alert(Context context){
+    public Alert(Context context, String title, String message){
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-        alertDialog.setTitle("No Network connections are available!");
-        alertDialog.setMessage("Can't connect to Database!");
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

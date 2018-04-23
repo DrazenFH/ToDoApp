@@ -31,16 +31,16 @@ public class FirebaseDB {
     }
 
     //WRITE
-    public Boolean save(ToDoItem spacecraft)
+    public Boolean save(ToDoItem newItem)
     {
-        if(spacecraft==null)
+        if(newItem==null)
         {
             saved=false;
         }else
         {
             try
             {
-                db.child("TodoItem").push().setValue(spacecraft);
+                db.child("TodoItem").push().setValue(newItem);
                 saved=true;
 
             }catch (DatabaseException e)

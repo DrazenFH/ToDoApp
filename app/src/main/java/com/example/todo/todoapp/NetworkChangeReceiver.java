@@ -45,7 +45,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
             MainActivity.getInstace().enableAddButton();
         }else
         {
-          new Alert(context);
+          new Alert(context, "No Network connections are available!","Can't connect to Database!");
             MainActivity.getInstace().disableAddButton();
 
         }

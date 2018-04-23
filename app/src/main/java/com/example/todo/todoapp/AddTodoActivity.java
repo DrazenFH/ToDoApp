@@ -85,7 +85,9 @@ public class AddTodoActivity extends AppCompatActivity implements
                         @Override
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth) {
-
+                            mYear=year;
+                            mMonth=monthOfYear;
+                            mDay=dayOfMonth;
                             btnDatePicker.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                         }
@@ -106,51 +108,53 @@ public class AddTodoActivity extends AppCompatActivity implements
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay,
                                               int minute) {
-
+                            mHour=hourOfDay;
+                            mMinute=minute;
                             btnTimePicker.setText(hourOfDay + ":" + minute);
                         }
                     }, mHour, mMinute, false);
             timePickerDialog.show();
+
         }
     }
 
     public void addToDo(View view){
+        if(title.getText().length()!=0) {
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+            FirebaseDB helper = new FirebaseDB(db);
 
-        DatabaseReference db= FirebaseDatabase.getInstance().getReference();
-        FirebaseDB helper=new FirebaseDB(db);
+            ToDoItem newItem = new ToDoItem();
 
-       ToDoItem newItem = new ToDoItem();
-
-        String todoTitle = title.getText().toString();
-        boolean reminder = reminderSwitch.isChecked();
-
-        System.out.println(reminder);
-
-
-
-        // get Date and Time from Pickers
-        Date date = new Date();
-
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, mHour);
-        cal.set(Calendar.MINUTE, mMinute);
-
-        cal.set(Calendar.DAY_OF_MONTH, mDay);
-        cal.set(Calendar.MONTH,mMonth);
-        cal.set(Calendar.YEAR,mYear);
-
-        // set Title, Date, Reminder to new Item and add to List
-        newItem.setmToDoText(todoTitle);
-        newItem.setmToDoDate(cal.getTime());
-        newItem.setmHasReminder(reminder);
-        newItem.setAssignedPersons(contactsTempList);
-       // newItem.addItemToList(newItem);
+            String todoTitle = title.getText().toString();
+            boolean reminder = reminderSwitch.isChecked();
+            newItem.setmToDoText(todoTitle);
+            newItem.setmHasReminder(reminder);
+            newItem.setAssignedPersons(contactsTempList);
 
 
-       helper.save(newItem);
+            // get Date and Time from Pickers
+            if(reminder) {
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.HOUR_OF_DAY, mHour);
+                cal.set(Calendar.MINUTE, mMinute);
+                cal.set(Calendar.SECOND, 0);
 
-      finish();
+                cal.set(Calendar.DAY_OF_MONTH, mDay);
+                cal.set(Calendar.MONTH, mMonth);
+                cal.set(Calendar.YEAR, mYear);
+                Date date = cal.getTime();
+                newItem.setmToDoDate(date);
+            }
 
+            if (helper.save(newItem) ) {
+                if(newItem.ismHasReminder()) {
+                    MainActivity.getInstace().setSingleAlarm(newItem);
+                }
+            } else {
+                new Alert(this, "An Error occurred", "Can't connect to Database!");
+            }
+            finish();
+        }
     }
 
         public void pickAContactNumber(View view) {
