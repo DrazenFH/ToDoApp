@@ -118,6 +118,12 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
                     Intent intent = new Intent(this, AlarmNotificationReceiver.class);
                     intent.putExtra(AlarmNotificationReceiver.TODOUUID, item.getmTodoIdentifier());
                     intent.putExtra(AlarmNotificationReceiver.TODOTEXT, item.getmToDoText());
+                    if(item.getmPlace()!=null) {
+                        intent.putExtra(AlarmNotificationReceiver.TODOCONTENT, item.getmPlace());
+                    }else
+                    {
+                        intent.putExtra(AlarmNotificationReceiver.TODOCONTENT, new String());
+                    }
                     createAlarm(intent, item.getmTodoIdentifier().hashCode(), item.getmToDoDate().getTime());
                 }
         }
@@ -192,6 +198,12 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
         Intent intent = new Intent(this, AlarmNotificationReceiver.class);
         intent.putExtra(AlarmNotificationReceiver.TODOUUID, item.getmTodoIdentifier());
         intent.putExtra(AlarmNotificationReceiver.TODOTEXT, item.getmToDoText());
+        if(item.getmPlace()!=null) {
+            intent.putExtra(AlarmNotificationReceiver.TODOCONTENT, item.getmPlace());
+        }else
+        {
+            intent.putExtra(AlarmNotificationReceiver.TODOCONTENT, new String());
+        }
         createAlarm(intent, item.getmTodoIdentifier().hashCode(), item.getmToDoDate().getTime());
         System.out.println("Setting single Alarm "+item.getmToDoDate());
     }
@@ -204,6 +216,8 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
     public void enableAddButton(){
        connection=true;
     }
+
+
 
 
 }

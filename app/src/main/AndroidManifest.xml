@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.todo.todoapp" >
+    package="com.example.todo.todoapp">
 
-    <uses-permission android:name="ANDROID.PERMISSION.INTERNET"/>
-    <uses-permission android:name="ANDROID.PERMISSION.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="ANDROID.PERMISSION.INTERNET" />
+    <uses-permission android:name="ANDROID.PERMISSION.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="ANDROID.PERMISSION.ACCESS_FINE_LOCATION" />
 
-
-    <uses-permission android:name="ANDROID.PERMISSION.INTERNET"/>
-    <uses-permission android:name="ANDROID.PERMISSION.ACCESS_NETWORK_STATE"/>
-
-    <!--We set theme to DarkTheme because when the app opens it shows
+    <!--
+    We set theme to DarkTheme because when the app opens it shows
     a white screen if our theme here is LightTheme. The screen is shown for
     about 1 second, but it's jarring if users have set Night Mode to true.
     -->
@@ -17,51 +15,52 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/CustomStyle.DarkTheme"
-        >
+        android:theme="@style/CustomStyle.DarkTheme">
         <activity
             android:name=".MainActivity"
+            android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-        <activity android:name=".AboutActivity"
+        <activity
+            android:name=".AboutActivity"
             android:label="About"
-            android:parentActivityName=".MainActivity"
-            />
-
-        <activity android:name=".AddTodoActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".AddTodoActivity"
             android:label="Add"
-            android:parentActivityName=".MainActivity"
-            />
-
-        <activity android:name=".SettingsActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".SettingsActivity"
             android:label="Settings"
-            android:parentActivityName=".MainActivity"
-            />
-
-        <activity android:name=".DetailTodoActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".DetailTodoActivity"
             android:label="DetailsTodo"
-            android:parentActivityName=".MainActivity"
-            />
-        <service android:name=".AlarmNotificationReceiver"
-            />
+            android:parentActivityName=".MainActivity" />
+
+        <service android:name=".AlarmNotificationReceiver" />
+
         <receiver
             android:name=".NetworkChangeReceiver"
-            android:label="NetworkChangeReceiver" >
+            android:label="NetworkChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDr0H8fCbuOTynb7BOU7kF7Q7Qm6Oqvp9o" />
     </application>
+
+
 
 
 </manifest>

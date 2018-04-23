@@ -8,14 +8,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
-
-import java.text.Format;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 /**
@@ -29,6 +31,7 @@ public class DetailTodoActivity extends AppCompatActivity {
     private TextView time;
     private TextView contacts;
     private TextView reminder;
+    private TextView place;
     private DatabaseReference db;
     private FirebaseDB helper;
     private Toolbar toolbar;
@@ -70,6 +73,10 @@ public class DetailTodoActivity extends AppCompatActivity {
             contacts = findViewById(R.id.editTextContacts);
             contacts.setText(persons);
         }
+        if(item.getmPlace()!=null&&item.getmPlace().length()>0){
+            place = findViewById(R.id.editTextPlace);
+            place.setText(item.getmPlace());
+        }
 
     }
 
@@ -79,8 +86,9 @@ public class DetailTodoActivity extends AppCompatActivity {
     }
 
     public void setAsDone(View view) {
-        finish();
+
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -94,4 +102,5 @@ public class DetailTodoActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }

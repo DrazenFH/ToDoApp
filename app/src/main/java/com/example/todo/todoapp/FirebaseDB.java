@@ -111,6 +111,7 @@ public class FirebaseDB {
                 HashMap <String, Object> hashMap=(HashMap<String, Object>) ds.child("mTodoIdentifier").getValue();
                 item.setmTodoIdentifier(new UUID((long)hashMap.get("mostSignificantBits"), (long)hashMap.get("leastSignificantBits")));
                 item.setAssignedPersons((ArrayList<String>)ds.child("assignedPersons").getValue());
+                item.setmPlace(ds.child("mPlace").getValue(String.class));
                 item.setmId(ds.getKey());
                 toDoItemArrayList.add(item);
                 dataChangedListener.dataChanged();

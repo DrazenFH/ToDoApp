@@ -16,7 +16,9 @@ public class AlarmNotificationReceiver extends IntentService {
 
     public static final String TODOTEXT = "todotext";
     public static final String TODOUUID = "todoid";
+    public static final String TODOCONTENT = "todocontent";
     private String mTodoText;
+    private String mTodoContent;
     private UUID mTodoUUID;
     private Context mContext;
 
@@ -27,6 +29,7 @@ public class AlarmNotificationReceiver extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         mTodoText = intent.getStringExtra(TODOTEXT);
+        mTodoContent = intent.getStringExtra(TODOCONTENT);
         mTodoUUID = (UUID) intent.getSerializableExtra(TODOUUID);
 
 
@@ -34,11 +37,12 @@ public class AlarmNotificationReceiver extends IntentService {
 
         Notification notification = new Notification.Builder(this)
                 .setContentTitle(mTodoText)
+                .setContentText(mTodoContent)
                 .setSmallIcon(R.drawable.ic_done_white_24dp)
                 .setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_SOUND)
                 .build();
-
+System.out.println("TODOCONTENT="+mTodoContent);
         manager.notify(100, notification);
 
     }

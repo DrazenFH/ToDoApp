@@ -17,8 +17,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -35,13 +39,16 @@ public class AddTodoActivity extends AppCompatActivity implements
 
     private Button btnDatePicker, btnTimePicker;
     private ListView contactList;
+    private EditText address;
     private EditText title;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    private ToDoItem toDoItem;
     private FloatingActionButton mToDoSendFloatingActionButton;
     private SwitchCompat reminderSwitch;
     private static final int PICK_CONTACT = 1000;
     private ArrayAdapter<String> arrayAdapter;
+    private String placeToAdd;
+
+   private static final int PLACE_PICKER_REQ_CODE = 1;
     private ArrayList<String> contactsTempList;
     //TODO: add person list for todoitem
 
@@ -93,6 +100,7 @@ public class AddTodoActivity extends AppCompatActivity implements
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()-1000);
+
             datePickerDialog.show();
         }
         if (v == btnTimePicker) {
@@ -116,6 +124,7 @@ public class AddTodoActivity extends AppCompatActivity implements
                     }, mHour, mMinute, false);
             timePickerDialog.show();
 
+
         }
     }
 
@@ -132,18 +141,21 @@ public class AddTodoActivity extends AppCompatActivity implements
             newItem.setmHasReminder(reminder);
             newItem.setAssignedPersons(contactsTempList);
             // get Date and Time from Pickers
+                if(newItem.ismHasReminder()) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.HOUR_OF_DAY, mHour);
+                    cal.set(Calendar.MINUTE, mMinute);
+                    cal.set(Calendar.SECOND, 0);
 
-                Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.HOUR_OF_DAY, mHour);
-                cal.set(Calendar.MINUTE, mMinute);
-                cal.set(Calendar.SECOND, 0);
-
-                cal.set(Calendar.DAY_OF_MONTH, mDay);
-                cal.set(Calendar.MONTH, mMonth);
-                cal.set(Calendar.YEAR, mYear);
-                Date date = cal.getTime();
-                newItem.setmToDoDate(date);
-
+                    cal.set(Calendar.DAY_OF_MONTH, mDay);
+                    cal.set(Calendar.MONTH, mMonth);
+                    cal.set(Calendar.YEAR, mYear);
+                    Date date = cal.getTime();
+                    newItem.setmToDoDate(date);
+                }
+                if(placeToAdd!=null&&placeToAdd.length()>0) {
+                    newItem.setmPlace(placeToAdd);
+                }
 
             if (helper.save(newItem) ) {
                 if(newItem.ismHasReminder()) {
@@ -176,16 +188,42 @@ public class AddTodoActivity extends AppCompatActivity implements
                         //Todo Add Person to Personlist from TODOItem
                         System.out.println("Added Person: " + contactNumberName);
                         if(!contactsTempList.contains(contactNumberName)) {
-
-
                             contactsTempList.add(contactNumberName);
                             arrayAdapter.notifyDataSetChanged();
                         }
+                        break;
+                    }
+                }case(PLACE_PICKER_REQ_CODE):
+
+                if (resultCode == RESULT_OK) {
+                    Place place = PlacePicker.getPlace(data, this);
+                    String toastMsg = String.format("Place: %s", place.getName());
+                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                    if(place.getAddress()!=null) {
+                        placeToAdd=place.getAddress().toString();
+                        address=findViewById(R.id.placeTextArea);
+                        address.setText(place.getAddress().toString());
+
                     }
                 }
                 break;
         }
+
     }
+
+    public void pickPlace(View view) {
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQ_CODE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 }
 
 

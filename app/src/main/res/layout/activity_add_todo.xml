@@ -126,8 +126,26 @@
                             android:text="@string/choose_time"
                             android:textColor="@android:color/white" />
 
+                        <Button
+                            android:id="@+id/addPlaceForTodo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_weight="1"
+                            android:text="@string/choose_Place"
+                            android:textColor="@android:color/white"
+                            android:onClick="pickPlace"/>
 
                     </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/placeTextArea"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="textMultiLine"
+                        android:focusable="false"/>
 
                     <ListView
                         android:id="@+id/newToDoDateTimeReminderTextView"
@@ -175,6 +193,7 @@
             app:fabSize="normal"
             app:layout_anchor="@id/editTextParentLinearLayout"
             app:layout_anchorGravity="bottom|right" />
+
 
     </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

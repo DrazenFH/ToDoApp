@@ -14,6 +14,10 @@
     <string name="done_label">Done</string>
     <string name="date_reminder_default">Today</string>
     <string name="date_error_check_again">The date you entered is in the past.</string>
+    <string name="choose_Place">Place</string>
+    <string name="textViewPlace">Place</string>
+
+
 
 
     <string name="todo_error">Please enter a Todo</string>

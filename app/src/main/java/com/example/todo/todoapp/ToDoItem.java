@@ -15,6 +15,7 @@ public class ToDoItem implements Serializable{
     private UUID mTodoIdentifier;
     private Date mToDoDate;
     private String mId;
+    private String mPlace;
     private ArrayList<String> assignedPersons;
 
 public ToDoItem(){
@@ -82,5 +83,13 @@ public ToDoItem(){
     @Override
     public String toString() {
         return this.mToDoText;
+    }
+
+    public String getmPlace() {
+        return mPlace;
+    }
+
+    public void setmPlace(String mPlace) {
+        this.mPlace = mPlace;
     }
 }
