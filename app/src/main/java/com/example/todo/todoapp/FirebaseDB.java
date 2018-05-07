@@ -84,11 +84,13 @@ public class FirebaseDB {
 
                 @Override
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    fetchData(dataSnapshot);
 
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
+
 
                 }
 
@@ -112,9 +114,18 @@ public class FirebaseDB {
                 item.setmTodoIdentifier(new UUID((long)hashMap.get("mostSignificantBits"), (long)hashMap.get("leastSignificantBits")));
                 item.setAssignedPersons((ArrayList<String>)ds.child("assignedPersons").getValue());
                 item.setmPlace(ds.child("mPlace").getValue(String.class));
+                item.setDone(ds.child("done").getValue(boolean.class));
                 item.setmId(ds.getKey());
                 toDoItemArrayList.add(item);
                 dataChangedListener.dataChanged();
              }
+        }
+
+        public void updateDone(ToDoItem item){
+            try {
+                db.child("TodoItem").child(item.getmId()).child("done").setValue(true);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 }

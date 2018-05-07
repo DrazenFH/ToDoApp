@@ -66,11 +66,12 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
                 ToDoItem item = (ToDoItem) adapter.getItem(i);
                 System.out.println(item.getmToDoText());
                 startDetailActivity(item);
-               //based on item add info to intent
+
             }
 
         });
         setAlarms();
+
     }
 
     private void startDetailActivity(ToDoItem item) {
@@ -192,6 +193,16 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
     @Override
     public void dataChanged() {
         adapter.notifyDataSetChanged();
+        checkItems();
+
+    }
+    public void checkItems(){
+        for(int i=0; i<mListView.getAdapter().getCount();i++){
+            ToDoItem item=(ToDoItem) mListView.getAdapter().getItem(i);
+            if(item.isDone()){
+                item.setmToDoText("\u2713 "+ item.getmToDoText());
+            }
+        }
 
     }
     public void setSingleAlarm(ToDoItem item){

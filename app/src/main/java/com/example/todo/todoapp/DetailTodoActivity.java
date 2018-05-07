@@ -86,7 +86,8 @@ public class DetailTodoActivity extends AppCompatActivity {
     }
 
     public void setAsDone(View view) {
-
+        helper.updateDone((ToDoItem) getIntent().getSerializableExtra("TodoItemClicked"));
+        finish();
     }
 
 

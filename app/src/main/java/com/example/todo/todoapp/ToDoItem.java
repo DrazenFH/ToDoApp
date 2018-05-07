@@ -17,11 +17,12 @@ public class ToDoItem implements Serializable{
     private String mId;
     private String mPlace;
     private ArrayList<String> assignedPersons;
+    private boolean done;
 
-public ToDoItem(){
-    mTodoIdentifier = UUID.randomUUID();
+    public ToDoItem(){
+     mTodoIdentifier = UUID.randomUUID();
 
-}
+    }
     public ToDoItem(String todoBody, boolean hasReminder, Date toDoDate){
         mToDoText = todoBody;
         mHasReminder = hasReminder;
@@ -91,5 +92,13 @@ public ToDoItem(){
 
     public void setmPlace(String mPlace) {
         this.mPlace = mPlace;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 }
