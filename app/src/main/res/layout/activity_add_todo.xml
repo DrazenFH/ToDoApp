@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".5"
-                android:background="?attr/colorPrimary"
+                android:background="@color/secondary_text"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -33,7 +33,8 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:hint="Name of Todo" />
+                    android:hint="Name of Todo"
+                    android:textColor="@color/secondary_text"/>
 
             </LinearLayout>
 
@@ -153,9 +154,8 @@
                         android:layout_height="40dp"
                         android:layout_weight="2"
                         android:gravity="start"
-                        android:text="@string/remind_date_and_time"
                         android:textColor="@color/secondary_text"
-                        android:textSize="5sp" />
+                        android:textSize="5sp"/>
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/addPersonForTodo"
@@ -192,7 +192,8 @@
             android:src="@drawable/ic_send_white_18dp"
             app:fabSize="normal"
             app:layout_anchor="@id/editTextParentLinearLayout"
-            app:layout_anchorGravity="bottom|right" />
+            app:layout_anchorGravity="bottom|right"
+            />
 
 
     </android.support.design.widget.CoordinatorLayout>

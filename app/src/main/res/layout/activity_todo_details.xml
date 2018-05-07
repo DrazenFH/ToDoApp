@@ -121,20 +121,21 @@
             </TableRow>
 
             <TableRow>
-            <TextView
-                android:id="@+id/textViewPlace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/textViewPlace"
-                tools:text="Place"/>
 
-            <EditText
-                android:id="@+id/editTextPlace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:focusable="false"
-                android:inputType="textMultiLine" />
+                <TextView
+                    android:id="@+id/textViewPlace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/textViewPlace"
+                    tools:text="Place" />
+
+                <EditText
+                    android:id="@+id/editTextPlace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:inputType="textMultiLine" />
             </TableRow>
 
             <TableRow
