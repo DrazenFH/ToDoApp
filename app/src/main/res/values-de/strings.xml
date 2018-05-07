@@ -19,8 +19,8 @@
     <string name="textViewContacts">Kontakte</string>
     <string name="textViewReminder">Erinnerung</string>
     <string name="todo_error">Bitte ein Todo eingeben</string>
-    <string name="buttonDone">Todo erledigt</string>
-    <string name="buttonRemove">Todo löschen</string>
+    <string name="buttonDone">Erledigt</string>
+    <string name="buttonRemove">Löschen</string>
     <string name="choose_Place">Ort</string>
     <string name="textViewPlace">Ort</string>
 

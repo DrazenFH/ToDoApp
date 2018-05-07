@@ -16,9 +16,12 @@
     <string name="date_error_check_again">The date you entered is in the past.</string>
     <string name="choose_Place">Place</string>
     <string name="textViewPlace">Place</string>
-
-
-
-
     <string name="todo_error">Please enter a Todo</string>
+    <string name="textViewTitle">Title</string>
+    <string name="textViewDate">Date</string>
+    <string name="textViewTime">Time</string>
+    <string name="textViewContacts">Contacts</string>
+    <string name="textViewReminder">Reminder</string>
+    <string name="buttonDone">Done</string>
+    <string name="buttonRemove">Remove</string>
 </resources>
