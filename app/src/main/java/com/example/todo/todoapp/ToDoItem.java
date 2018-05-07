@@ -10,62 +10,62 @@ import java.util.Date;
 import java.util.UUID;
 
 public class ToDoItem implements Serializable{
-    private String mToDoText;
-    private boolean mHasReminder;
-    private UUID mTodoIdentifier;
-    private Date mToDoDate;
-    private String mId;
-    private String mPlace;
+    private String todoTxt;
+    private boolean hasReminder;
+    private UUID todoId;
+    private Date todoDate;
+    private String id;
+    private String place;
     private ArrayList<String> assignedPersons;
     private boolean done;
 
     public ToDoItem(){
-     mTodoIdentifier = UUID.randomUUID();
+     todoId = UUID.randomUUID();
 
     }
     public ToDoItem(String todoBody, boolean hasReminder, Date toDoDate){
-        mToDoText = todoBody;
-        mHasReminder = hasReminder;
-        mToDoDate = toDoDate;
-        mTodoIdentifier = UUID.randomUUID();
+        todoTxt = todoBody;
+        this.hasReminder = hasReminder;
+        todoDate = toDoDate;
+        todoId = UUID.randomUUID();
     }
-    public String getmId() {
-        return mId;
-    }
-
-    public void setmId(String mId) {
-        this.mId = mId;
-    }
-    public String getmToDoText() {
-        return mToDoText;
+    public String getId() {
+        return id;
     }
 
-    public void setmToDoText(String mToDoText) {
-        this.mToDoText = mToDoText;
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getTodoTxt() {
+        return todoTxt;
     }
 
-    public boolean ismHasReminder() {
-        return mHasReminder;
+    public void setTodoTxt(String todoTxt) {
+        this.todoTxt = todoTxt;
     }
 
-    public void setmHasReminder(boolean mHasReminder) {
-        this.mHasReminder = mHasReminder;
+    public boolean isHasReminder() {
+        return hasReminder;
     }
 
-    public Date getmToDoDate() {
-        return mToDoDate;
+    public void setHasReminder(boolean hasReminder) {
+        this.hasReminder = hasReminder;
     }
 
-    public void setmToDoDate(Date mToDoDate) {
-        this.mToDoDate = mToDoDate;
+    public Date getTodoDate() {
+        return todoDate;
     }
 
-    public UUID getmTodoIdentifier() {
-        return mTodoIdentifier;
+    public void setTodoDate(Date todoDate) {
+        this.todoDate = todoDate;
     }
 
-    public void setmTodoIdentifier(UUID mTodoIdentifier) {
-        this.mTodoIdentifier = mTodoIdentifier;
+    public UUID getTodoId() {
+        return todoId;
+    }
+
+    public void setTodoId(UUID todoId) {
+        this.todoId = todoId;
     }
 
     public ArrayList<String> getAssignedPersons() {
@@ -83,15 +83,15 @@ public class ToDoItem implements Serializable{
 
     @Override
     public String toString() {
-        return this.mToDoText;
+        return this.todoTxt;
     }
 
-    public String getmPlace() {
-        return mPlace;
+    public String getPlace() {
+        return place;
     }
 
-    public void setmPlace(String mPlace) {
-        this.mPlace = mPlace;
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     public boolean isDone() {

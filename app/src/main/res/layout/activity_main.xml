@@ -6,7 +6,6 @@
     android:gravity="center"
     android:layout_height="match_parent">
 
-    <!--<include layout="@layout/base_toolbar"/>-->
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/myCoordinatorLayout"
         android:layout_width="match_parent"
@@ -22,11 +21,6 @@
             <include layout="@layout/base_toolbar" />
 
         </android.support.design.widget.AppBarLayout>
-
-        <!--<include layout="@layout/base_toolbar"/>-->
-
-
-        <!--</android.support.design.widget.AppBarLayout>-->
 
 
         <RelativeLayout

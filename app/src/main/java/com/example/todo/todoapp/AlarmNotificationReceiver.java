@@ -17,10 +17,11 @@ public class AlarmNotificationReceiver extends IntentService {
     public static final String TODOTEXT = "todotext";
     public static final String TODOUUID = "todoid";
     public static final String TODOCONTENT = "todocontent";
-    private String mTodoText;
-    private String mTodoContent;
-    private UUID mTodoUUID;
-    private Context mContext;
+    private String todoTxt;
+    private String todoContent;
+    private UUID todoUuid;
+    private Context context;
+
 
     public AlarmNotificationReceiver() {
         super("AlarmNotificationReceiver");
@@ -28,21 +29,21 @@ public class AlarmNotificationReceiver extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        mTodoText = intent.getStringExtra(TODOTEXT);
-        mTodoContent = intent.getStringExtra(TODOCONTENT);
-        mTodoUUID = (UUID) intent.getSerializableExtra(TODOUUID);
+        todoTxt = intent.getStringExtra(TODOTEXT);
+        todoContent = intent.getStringExtra(TODOCONTENT);
+        todoUuid = (UUID) intent.getSerializableExtra(TODOUUID);
 
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         Notification notification = new Notification.Builder(this)
-                .setContentTitle(mTodoText)
-                .setContentText(mTodoContent)
+                .setContentTitle(todoTxt)
+                .setContentText(todoContent)
                 .setSmallIcon(R.drawable.ic_done_white_24dp)
                 .setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_SOUND)
                 .build();
-System.out.println("TODOCONTENT="+mTodoContent);
+System.out.println("TODOCONTENT="+ todoContent);
         manager.notify(100, notification);
 
     }

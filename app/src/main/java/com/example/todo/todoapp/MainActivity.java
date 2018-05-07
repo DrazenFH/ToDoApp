@@ -1,37 +1,29 @@
 package com.example.todo.todoapp;
 
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ActivityInfo;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements OnFireBaseDataChanged{
-    private int mTheme = -1;
-    private ListView mListView;
-    private ArrayList<ToDoItem> mToDoItemsArrayList;
+    private int theme = -1;
+    private ListView listView;
+    private ArrayList<ToDoItem> todoItemArrayList;
     private NetworkChangeReceiver networkChangeReceiver = null;
     private DatabaseReference db;
     private FirebaseDB helper;
@@ -44,27 +36,26 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
 
         instance = this;
         connection=true;
-        mTheme = R.style.CustomStyle_LightTheme;
-        this.setTheme(mTheme);
+        theme = R.style.CustomStyle_LightTheme;
+        this.setTheme(theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Liste erstellen
-        mListView = (ListView) findViewById(R.id.recipe_list_view);
+        listView = (ListView) findViewById(R.id.recipe_list_view);
         db= FirebaseDatabase.getInstance().getReference();
         helper=new FirebaseDB(db, this);
 
-        //ADAPTER
+        //Adapter -->set the entries from the DB to the view
         adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,helper.retrieve());
 
-        mListView.setAdapter(adapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ToDoItem item = (ToDoItem) adapter.getItem(i);
-                System.out.println(item.getmToDoText());
+                System.out.println(item.getTodoTxt());
                 startDetailActivity(item);
 
             }
@@ -106,26 +97,26 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
 
     private void setAlarms(){
             System.out.println("Setting alarms");
-            System.out.println("Size "+mListView.getAdapter().getCount());
-            for(int i=0; i<mListView.getAdapter().getCount();i++){
-                ToDoItem item=(ToDoItem) mListView.getAdapter().getItem(i);
-                System.out.println("Todoitem alarm "+item.getmToDoText());
-                System.out.println("Todoitem alarm "+item.getmToDoDate());
-                if(item.ismHasReminder() && item.getmToDoDate()!=null){
-                    if(item.getmToDoDate().before(new Date())){
-                        item.setmToDoDate(null);
+            System.out.println("Size "+ listView.getAdapter().getCount());
+            for(int i = 0; i< listView.getAdapter().getCount(); i++){
+                ToDoItem item=(ToDoItem) listView.getAdapter().getItem(i);
+                System.out.println("Todoitem alarm "+item.getTodoTxt());
+                System.out.println("Todoitem alarm "+item.getTodoDate());
+                if(item.isHasReminder() && item.getTodoDate()!=null){
+                    if(item.getTodoDate().before(new Date())){
+                        item.setTodoDate(null);
                         continue;
                     }
                     Intent intent = new Intent(this, AlarmNotificationReceiver.class);
-                    intent.putExtra(AlarmNotificationReceiver.TODOUUID, item.getmTodoIdentifier());
-                    intent.putExtra(AlarmNotificationReceiver.TODOTEXT, item.getmToDoText());
-                    if(item.getmPlace()!=null) {
-                        intent.putExtra(AlarmNotificationReceiver.TODOCONTENT, item.getmPlace());
+                    intent.putExtra(AlarmNotificationReceiver.TODOUUID, item.getTodoId());
+                    intent.putExtra(AlarmNotificationReceiver.TODOTEXT, item.getTodoTxt());
+                    if(item.getPlace()!=null) {
+                        intent.putExtra(AlarmNotificationReceiver.TODOCONTENT, item.getPlace());
                     }else
                     {
                         intent.putExtra(AlarmNotificationReceiver.TODOCONTENT, new String());
                     }
-                    createAlarm(intent, item.getmTodoIdentifier().hashCode(), item.getmToDoDate().getTime());
+                    createAlarm(intent, item.getTodoId().hashCode(), item.getTodoDate().getTime());
                 }
         }
     }
@@ -147,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -160,11 +152,6 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
                 startActivity(i);
                 return true;
 
-            /*case R.id.preferences:
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
-*/
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -183,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         // If the broadcast receiver is not null then unregister it.
         // This action is better placed in activity onDestroy() method.
         if(this.networkChangeReceiver!=null) {
@@ -197,26 +185,26 @@ public class MainActivity extends AppCompatActivity implements OnFireBaseDataCha
 
     }
     public void checkItems(){
-        for(int i=0; i<mListView.getAdapter().getCount();i++){
-            ToDoItem item=(ToDoItem) mListView.getAdapter().getItem(i);
+        for(int i = 0; i< listView.getAdapter().getCount(); i++){
+            ToDoItem item=(ToDoItem) listView.getAdapter().getItem(i);
             if(item.isDone()){
-                item.setmToDoText("\u2713 "+ item.getmToDoText());
+                item.setTodoTxt("\u2713 "+ item.getTodoTxt());
             }
         }
 
     }
     public void setSingleAlarm(ToDoItem item){
         Intent intent = new Intent(this, AlarmNotificationReceiver.class);
-        intent.putExtra(AlarmNotificationReceiver.TODOUUID, item.getmTodoIdentifier());
-        intent.putExtra(AlarmNotificationReceiver.TODOTEXT, item.getmToDoText());
-        if(item.getmPlace()!=null) {
-            intent.putExtra(AlarmNotificationReceiver.TODOCONTENT, item.getmPlace());
+        intent.putExtra(AlarmNotificationReceiver.TODOUUID, item.getTodoId());
+        intent.putExtra(AlarmNotificationReceiver.TODOTEXT, item.getTodoTxt());
+        if(item.getPlace()!=null) {
+            intent.putExtra(AlarmNotificationReceiver.TODOCONTENT, item.getPlace());
         }else
         {
             intent.putExtra(AlarmNotificationReceiver.TODOCONTENT, new String());
         }
-        createAlarm(intent, item.getmTodoIdentifier().hashCode(), item.getmToDoDate().getTime());
-        System.out.println("Setting single Alarm "+item.getmToDoDate());
+        createAlarm(intent, item.getTodoId().hashCode(), item.getTodoDate().getTime());
+        System.out.println("Setting single Alarm "+item.getTodoDate());
     }
     public static MainActivity getInstace(){
         return instance;
