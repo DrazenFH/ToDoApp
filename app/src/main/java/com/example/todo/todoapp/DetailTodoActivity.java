@@ -8,13 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -36,6 +30,8 @@ public class DetailTodoActivity extends AppCompatActivity {
     private FirebaseDB helper;
     private Toolbar toolbar;
 
+    //shows detail of the choosen Todo on the mainpage, save when entry is changed (remove or update)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -52,18 +48,18 @@ public class DetailTodoActivity extends AppCompatActivity {
         ToDoItem item = (ToDoItem) i.getSerializableExtra("TodoItemClicked");
 
         title = findViewById(R.id.editTextTitle);
-        title.setText(item.getmToDoText());
-        if (item.getmToDoDate() != null) {
+        title.setText(item.getTodoTxt());
+        if (item.getTodoDate() != null) {
             date = findViewById(R.id.editTextDate);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            date.setText(simpleDateFormat.format(item.getmToDoDate()));
+            date.setText(simpleDateFormat.format(item.getTodoDate()));
 
             time = findViewById(R.id.editTextTime);
             simpleDateFormat = new SimpleDateFormat("hh:mm");
-            time.setText(simpleDateFormat.format(item.getmToDoDate()));
+            time.setText(simpleDateFormat.format(item.getTodoDate()));
         }
         reminder = findViewById(R.id.editTextReminder);
-        reminder.setText(String.valueOf(item.ismHasReminder()));
+        reminder.setText(String.valueOf(item.isHasReminder()));
 
         if (item.getAssignedPersons() != null && item.getAssignedPersons().size() > 0) {
             String persons = new String();
@@ -73,9 +69,9 @@ public class DetailTodoActivity extends AppCompatActivity {
             contacts = findViewById(R.id.editTextContacts);
             contacts.setText(persons);
         }
-        if(item.getmPlace()!=null&&item.getmPlace().length()>0){
+        if(item.getPlace()!=null&&item.getPlace().length()>0){
             place = findViewById(R.id.editTextPlace);
-            place.setText(item.getmPlace());
+            place.setText(item.getPlace());
         }
 
     }

@@ -1,14 +1,10 @@
 package com.example.todo.todoapp;
 
-import android.util.Log;
-
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,7 +55,7 @@ public class FirebaseDB {
     }
 
         public void removeItem(ToDoItem item){
-            db.child("TodoItem").child(item.getmId()).removeValue();
+            db.child("TodoItem").child(item.getId()).removeValue();
 
         }
         //READ
@@ -107,15 +103,15 @@ public class FirebaseDB {
             {
 
                 ToDoItem item=new ToDoItem();
-                item.setmToDoText(ds.child("mToDoText").getValue(String.class));
-                item.setmHasReminder(ds.child("mHasReminder").getValue(boolean.class));
-                item.setmToDoDate(ds.child("mToDoDate").getValue(Date.class));
-                HashMap <String, Object> hashMap=(HashMap<String, Object>) ds.child("mTodoIdentifier").getValue();
-                item.setmTodoIdentifier(new UUID((long)hashMap.get("mostSignificantBits"), (long)hashMap.get("leastSignificantBits")));
+                item.setTodoTxt(ds.child("todoTxt").getValue(String.class));
+                item.setHasReminder(ds.child("hasReminder").getValue(boolean.class));
+                item.setTodoDate(ds.child("todoDate").getValue(Date.class));
+                HashMap <String, Object> hashMap=(HashMap<String, Object>) ds.child("todoId").getValue();
+                item.setTodoId(new UUID((long)hashMap.get("mostSignificantBits"), (long)hashMap.get("leastSignificantBits")));
                 item.setAssignedPersons((ArrayList<String>)ds.child("assignedPersons").getValue());
-                item.setmPlace(ds.child("mPlace").getValue(String.class));
+                item.setPlace(ds.child("place").getValue(String.class));
                 item.setDone(ds.child("done").getValue(boolean.class));
-                item.setmId(ds.getKey());
+                item.setId(ds.getKey());
                 toDoItemArrayList.add(item);
                 dataChangedListener.dataChanged();
              }
@@ -123,7 +119,7 @@ public class FirebaseDB {
 
         public void updateDone(ToDoItem item){
             try {
-                db.child("TodoItem").child(item.getmId()).child("done").setValue(true);
+                db.child("TodoItem").child(item.getId()).child("done").setValue(true);
             }catch (Exception e){
                 e.printStackTrace();
             }

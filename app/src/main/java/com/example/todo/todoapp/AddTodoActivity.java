@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -41,7 +40,7 @@ public class AddTodoActivity extends AppCompatActivity implements
     private ListView contactList;
     private EditText address;
     private EditText title;
-    private int mYear, mMonth, mDay, mHour, mMinute;
+    private int year, month, day, hour, minute;
     private FloatingActionButton mToDoSendFloatingActionButton;
     private SwitchCompat reminderSwitch;
     private static final int PICK_CONTACT = 1000;
@@ -50,7 +49,6 @@ public class AddTodoActivity extends AppCompatActivity implements
 
    private static final int PLACE_PICKER_REQ_CODE = 1;
     private ArrayList<String> contactsTempList;
-    //TODO: add person list for todoitem
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +79,9 @@ public class AddTodoActivity extends AppCompatActivity implements
 
             // Get Current Date
             final Calendar c = Calendar.getInstance();
-            mYear = c.get(Calendar.YEAR);
-            mMonth = c.get(Calendar.MONTH);
-            mDay = c.get(Calendar.DAY_OF_MONTH);
+            year = c.get(Calendar.YEAR);
+            month = c.get(Calendar.MONTH);
+            day = c.get(Calendar.DAY_OF_MONTH);
 
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
@@ -92,13 +90,13 @@ public class AddTodoActivity extends AppCompatActivity implements
                         @Override
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth) {
-                            mYear=year;
-                            mMonth=monthOfYear;
-                            mDay=dayOfMonth;
+                            AddTodoActivity.this.year =year;
+                            month =monthOfYear;
+                            day =dayOfMonth;
                             btnDatePicker.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                         }
-                    }, mYear, mMonth, mDay);
+                    }, year, month, day);
             datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()-1000);
 
             datePickerDialog.show();
@@ -107,8 +105,8 @@ public class AddTodoActivity extends AppCompatActivity implements
 
             // Get Current Time
             final Calendar c = Calendar.getInstance();
-            mHour = c.get(Calendar.HOUR_OF_DAY);
-            mMinute = c.get(Calendar.MINUTE);
+            hour = c.get(Calendar.HOUR_OF_DAY);
+            minute = c.get(Calendar.MINUTE);
 
             // Launch Time Picker Dialog
             TimePickerDialog timePickerDialog = new TimePickerDialog(this,
@@ -117,17 +115,19 @@ public class AddTodoActivity extends AppCompatActivity implements
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay,
                                               int minute) {
-                            mHour=hourOfDay;
-                            mMinute=minute;
+                            hour =hourOfDay;
+                            AddTodoActivity.this.minute =minute;
                             btnTimePicker.setText(hourOfDay + ":" + minute);
                         }
-                    }, mHour, mMinute, false);
+                    }, hour, minute, false);
             timePickerDialog.show();
 
 
         }
     }
 
+
+    //save added ToDO to the Database
     public void addToDo(View view){
         if(title.getText().length()!=0) {
             DatabaseReference db = FirebaseDatabase.getInstance().getReference();
@@ -137,28 +137,29 @@ public class AddTodoActivity extends AppCompatActivity implements
 
             String todoTitle = title.getText().toString();
             boolean reminder = reminderSwitch.isChecked();
-            newItem.setmToDoText(todoTitle);
-            newItem.setmHasReminder(reminder);
+            newItem.setTodoTxt(todoTitle);
+            newItem.setHasReminder(reminder);
             newItem.setAssignedPersons(contactsTempList);
+
             // get Date and Time from Pickers
-                if(newItem.ismHasReminder()) {
+                if(newItem.isHasReminder()) {
                     Calendar cal = Calendar.getInstance();
-                    cal.set(Calendar.HOUR_OF_DAY, mHour);
-                    cal.set(Calendar.MINUTE, mMinute);
+                    cal.set(Calendar.HOUR_OF_DAY, hour);
+                    cal.set(Calendar.MINUTE, minute);
                     cal.set(Calendar.SECOND, 0);
 
-                    cal.set(Calendar.DAY_OF_MONTH, mDay);
-                    cal.set(Calendar.MONTH, mMonth);
-                    cal.set(Calendar.YEAR, mYear);
+                    cal.set(Calendar.DAY_OF_MONTH, day);
+                    cal.set(Calendar.MONTH, month);
+                    cal.set(Calendar.YEAR, year);
                     Date date = cal.getTime();
-                    newItem.setmToDoDate(date);
+                    newItem.setTodoDate(date);
                 }
                 if(placeToAdd!=null&&placeToAdd.length()>0) {
-                    newItem.setmPlace(placeToAdd);
+                    newItem.setPlace(placeToAdd);
                 }
 
             if (helper.save(newItem) ) {
-                if(newItem.ismHasReminder()) {
+                if(newItem.isHasReminder()) {
                     MainActivity.getInstace().setSingleAlarm(newItem);
                 }
             } else {
@@ -173,6 +174,7 @@ public class AddTodoActivity extends AppCompatActivity implements
             startActivityForResult(intent, PICK_CONTACT);
         }
 
+        //gets the result of the picker
     @Override
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
