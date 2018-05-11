@@ -34,7 +34,7 @@
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:hint="Name of Todo"
-                    android:textColor="@color/secondary_text"/>
+                    android:textColor="@color/primary_ligher"/>
 
             </LinearLayout>
 
